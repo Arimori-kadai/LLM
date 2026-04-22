@@ -1,0 +1,39 @@
+{
+  "name": "Arimori LLM",
+  // Dockerfileの場所を指定（同じフォルダにある場合）
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+
+  // コンテナ内での設定
+  "customizations": {
+    "vscode": {
+      // コンテナ起動時に自動でインストールする拡張機能
+      "extensions": [
+        "ms-python.python",           // Python本体のサポート
+        "ms-python.vscode-pylance",    // 高性能な言語サーバー
+        "ms-python.debugpy",          // デバッガー
+        "njpwerner.autodocstring",    // Docstring生成
+        "tamasfe.even-better-toml"    // TOMLファイル用（必要なら）
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.languageServer": "Pylance",
+        "editor.formatOnSave": true
+      }
+    }
+  },
+
+  // ホスト（PC）側のポートをコンテナと繋ぐ（Flask用）
+  "forwardPorts": [5000],
+
+  // コンテナが作成された後に実行するコマンド
+  // requirements.txtがある場合、自動でインストールさせると楽です
+//   "postCreateCommand": "pip install --no-cache-dir -r requirements.txt",
+
+  // コンテナを起動したままにする設定
+  "remoteUser": "root",
+
+  "shutdownAction": "stopContainer"
+}

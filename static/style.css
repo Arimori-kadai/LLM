@@ -1,0 +1,118 @@
+/* 基本スタイル */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* チャットコンテナ全体 */
+.chat-container {
+    width: 100%;
+    max-width: 600px;
+    height: 80vh;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* ヘッダー */
+.chat-header {
+    background-color: #007bff;
+    color: white;
+    padding: 15px 20px;
+    border-bottom: 1px solid #ddd;
+}
+.chat-header h1 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+/* チャットボックス（メッセージ表示） */
+.chat-box {
+    flex-grow: 1; /* 残りの高さをすべて使う */
+    padding: 20px;
+    overflow-y: auto; /* メッセージが増えたらスクロール */
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* メッセージ間の余白 */
+}
+
+/* メッセージ共通スタイル */
+.message {
+    max-width: 80%;
+    padding: 10px 15px;
+    border-radius: 18px;
+    line-height: 1.5;
+}
+.message p {
+    margin: 0;
+}
+
+/* LLM (AI) のメッセージ */
+.message.llm {
+    background-color: #e9ecef;
+    color: #333;
+    align-self: flex-start; /* 左寄せ */
+    border-bottom-left-radius: 4px;
+}
+
+/* ユーザーのメッセージ */
+.message.user {
+    background-color: #007bff;
+    color: white;
+    align-self: flex-end; /* 右寄せ */
+    border-bottom-right-radius: 4px;
+}
+
+/* "考え中..." のインジケーター */
+.message.loading {
+    background-color: #e9ecef;
+    color: #888;
+    align-self: flex-start;
+    font-style: italic;
+    border-bottom-left-radius: 4px;
+}
+
+/* 入力エリア */
+.input-area {
+    display: flex;
+    padding: 15px;
+    border-top: 1px solid #ddd;
+    background-color: #f9f9f9;
+}
+
+#user-input {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    margin-right: 10px;
+    font-size: 1rem;
+}
+#user-input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+}
+
+#send-btn {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+#send-btn:hover {
+    background-color: #0056b3;
+}

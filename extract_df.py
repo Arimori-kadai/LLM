@@ -1,6 +1,7 @@
 import pandas as pd
 import json
 import io
+import csv
 import re
 
 pd.set_option('display.max_rows', 100)
@@ -30,6 +31,42 @@ def extract_csv_from_output(output: str) -> str:
     return output
 
 
+def csv_text_to_dataframe(csv_text: str) -> pd.DataFrame:
+    """CSVテキストをDataFrameに変換する（列数の揺れに頑健）。
+
+    LLMが生成したCSVは行ごとにフィールド数が一致しないことがある
+    （例: 戦略フラグ列が余分に付く）。そのままpd.read_csvに渡すと
+    「Expected N fields, saw M」のParserErrorになるため、
+    ヘッダーの列数に合わせて各行を切り詰め／不足分はパディングする。
+    """
+    rows = list(csv.reader(io.StringIO(csv_text)))
+    if not rows:
+        return pd.DataFrame()
+
+    header = rows[0]
+    ncol = len(header)
+
+    fixed_rows = []
+    for r in rows[1:]:
+        if len(r) > ncol:
+            r = r[:ncol]          # 余分な末尾フィールドを捨てる
+        elif len(r) < ncol:
+            r = r + [None] * (ncol - len(r))  # 不足分を埋める
+        fixed_rows.append(r)
+
+    df = pd.DataFrame(fixed_rows, columns=header)
+
+    # 数値列を可能な範囲で数値型に変換する（変換できない列はそのまま）
+    for col in df.columns:
+        if col in ("発言者", "発言"):
+            continue
+        converted = pd.to_numeric(df[col], errors="coerce")
+        # 元が非欠損なのに変換でNaNになった値がなければ数値列として採用
+        if not (converted.isna() & df[col].notna()).any():
+            df[col] = converted
+    return df
+
+
 def load_dataframe(filename: str) -> pd.DataFrame:
     """JSONファイルのoutputキーからCSVを抽出してDataFrameを返す。"""
     with open(filename, encoding="utf-8") as f:
@@ -38,7 +75,7 @@ def load_dataframe(filename: str) -> pd.DataFrame:
     # データはリストの先頭要素に格納されている
     record = data[0]
     csv_text = extract_csv_from_output(record["output"])
-    df = pd.read_csv(io.StringIO(csv_text))
+    df = csv_text_to_dataframe(csv_text)
     return df
 
 

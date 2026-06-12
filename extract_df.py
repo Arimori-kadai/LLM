@@ -44,7 +44,22 @@ def load_dataframe(filename: str) -> pd.DataFrame:
 
 if __name__ == "__main__":
     # 抽出したDataFrameを変数dfに保存
-    filename = "100_________.json"  # 対象のJSONファイル名に合わせて変更
-    df = load_dataframe(filename)
-    print(df)
-    print(df.shape)
+    import glob
+
+    file_list = glob.glob("*.json")
+    df_list = []
+    for filename in file_list:
+        # デバッグ用: 読み込み中のファイル名を表示
+        print(f"読み込み中: {filename}")
+        try:
+            df = load_dataframe(filename)
+        except Exception as e:
+            # エラーが起きたファイルを特定できるようファイル名と一緒に表示
+            print(f"  -> エラー発生: {filename}")
+            print(f"     {type(e).__name__}: {e}")
+            continue
+        print(f"  -> OK: {df.shape}")
+        df_list.append(df)
+
+    combined_df = pd.concat(df_list, ignore_index=True)
+    print(combined_df.head())

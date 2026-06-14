@@ -48,6 +48,9 @@ def csv_text_to_dataframe(csv_text: str) -> pd.DataFrame:
 
     fixed_rows = []
     for r in rows[1:]:
+        # 50件ごとに挿入される重複ヘッダー行をスキップする
+        if r[:len(header)] == header or r[0] == header[0]:
+            continue
         if len(r) > ncol:
             r = r[:ncol]          # 余分な末尾フィールドを捨てる
         elif len(r) < ncol:

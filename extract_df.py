@@ -98,6 +98,9 @@ if __name__ == "__main__":
             print(f"  -> エラー発生: {filename}")
             print(f"     {type(e).__name__}: {e}")
             continue
+        if df.shape != (203, 14):
+            print(f"  -> スキップ: shape={df.shape} (期待値: (203, 14))")
+            continue
         print(f"  -> OK: {df.shape}")
         df_list.append(df)
 

@@ -1,0 +1,11 @@
+## Overleaf / latexmk 用設定（uplatex + dvipdfmx + BibTeX）
+## Overleaf では Menu > Compiler を「LaTeX」にしておけば、この latexmkrc が
+## uplatex 経路でのビルドを自動で行う。
+
+$latex            = 'uplatex -synctex=1 -halt-on-error -file-line-error %O %S';
+$bibtex           = 'upbibtex %O %B';
+$dvipdf           = 'dvipdfmx %O -o %D %S';
+$makeindex        = 'upmendex %O -o %D %S';
+$max_repeat       = 5;
+$pdf_mode         = 3;   # dvi -> pdf (dvipdfmx)
+$pdf_previewer    = 'open %S';

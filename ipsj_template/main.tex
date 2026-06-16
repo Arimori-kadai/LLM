@@ -1,69 +1,57 @@
 %% =====================================================================
-%%  情報処理学会論文誌ジャーナル 投稿用テンプレート（和文・submit）
+%%  和文2段組 投稿用テンプレート（A4・指定マージン準拠）
 %% ---------------------------------------------------------------------
-%%  コンパイラ : uplatex（または platex）+ dvipdfmx
-%%               Overleaf では Menu > Compiler を「LaTeX」、
-%%               TeX Live を最新、Main document を main.tex に設定。
-%%               （latexmk 用の設定は latexmkrc を参照）
-%%  必要ファイル: ipsj.cls, ipsjsort.bst を本プロジェクトに同梱すること。
-%%               情報処理学会の「LaTeX スタイルファイル」配布ページから
-%%               入手し、このフォルダにアップロードする。
+%%  コンパイラ : uplatex + dvipdfmx
+%%               Overleaf では Menu > Compiler を「LaTeX」に設定。
+%%  レイアウト条件（投稿規定に準拠）:
+%%    - 用紙       : A4（210mm x 297mm）
+%%    - 上マージン : 30mm
+%%    - 下マージン : 25mm
+%%    - 左マージン : 20mm
+%%    - 右マージン : 20mm
+%%    - コラム間   : 7mm
+%%    - ノンブル   : なし（ページ番号を入れない）
 %%  参考文献   : references.bib + ipsjsort.bst（BibTeX）
+%%               ※ ipsjsort.bst をプロジェクトに同梱すること。
 %% =====================================================================
-%%
-%% 投稿時は [submit] を付ける。カメラレディ時は [submit] を外す。
-\documentclass[submit,techrep]{ipsj}
+\documentclass[uplatex,a4paper,twocolumn,10pt]{jsarticle}
+
+%% --- 用紙・マージン設定（指定値を厳密に反映）-----------------------
+%% nohead,nofoot により本文ブロックが上30mm〜下25mmに正確に収まる。
+%% dvipdfmx ドライバ指定で papersize special が入り、PDF が確実に A4 になる。
+\usepackage[dvipdfmx,a4paper,truedimen,
+  top=30mm, bottom=25mm, left=20mm, right=20mm,
+  columnsep=7mm,
+  nohead, nofoot]{geometry}
 
 \usepackage[dvipdfmx]{graphicx}
 \usepackage{latexsym}
 
-%% 受付・採録日（投稿時は仮の日付でよい）
-\受付{2026}{6}{16}
-\採録{2026}{6}{16}
+%% --- ノンブル（ページ番号）を入れない -------------------------------
+\pagestyle{empty}
 
 \begin{document}
+\thispagestyle{empty}
 
-%% ---- タイトル -------------------------------------------------------
-\title{ここに和文タイトルを記入する}
-\etitle{English Title Here}
-
-%% ---- 所属 -----------------------------------------------------------
-%% \affiliate{ラベル}{和文所属\\英文所属}
-\affiliate{IPSJ}{所属機関名\\
-Affiliation, City, Country}
-%% 現在の所属など（任意）
-%\paffiliate{JU}{現在，○○大学}
-
-%% ---- 著者 -----------------------------------------------------------
-%% \author{和名}{英名}{所属ラベル}[メールアドレス]
-\author{情報 太郎}{Taro Joho}{IPSJ}[author@example.ac.jp]
-\author{処理 花子}{Hanako Shori}{IPSJ}
-
-%% ---- 概要・キーワード ----------------------------------------------
-\begin{abstract}
-ここに和文の概要を記入する．本論文では……について述べ，
-……を提案し，……により有効性を示す．
-\end{abstract}
-
-\begin{jkeyword}
-キーワード1，キーワード2，キーワード3
-\end{jkeyword}
-
-\begin{eabstract}
-Write the English abstract here. This paper proposes ...
-and demonstrates its effectiveness through ...
-\end{eabstract}
-
-\begin{ekeyword}
-keyword1, keyword2, keyword3
-\end{ekeyword}
-
-\maketitle
+%% --- タイトル --------------------------------------------------------
+\twocolumn[
+  \begin{center}
+    {\LARGE ここに和文タイトルを記入する}\\[2mm]
+    {\large English Title Here}\\[4mm]
+    {\normalsize 情報 太郎\quad 処理 花子}\\[1mm]
+    {\small 所属機関名}\\[4mm]
+  \end{center}
+  \begin{quote}
+    \textbf{概要}\quad
+    ここに和文の概要を記入する．本論文では……について述べ，
+    ……を提案し，……により有効性を示す．
+  \end{quote}
+  \vspace{4mm}
+]
 
 %% =====================================================================
 \section{はじめに}
 本文をここに記述する．参考文献は\cite{ipsj-sample}のように引用する．
-複数引用は\cite{ipsj-sample,book-sample}のようにまとめられる．
 
 \section{関連研究}
 
@@ -96,20 +84,11 @@ keyword1, keyword2, keyword3
 \section{評価}
 
 \section{おわりに}
+%% 投稿ページ数はなるべく偶数ページになるよう調整する．
+%% 3ページ目以降は1ページあたり追加ページ代が発生する点に注意．
 
-%% ---- 謝辞（任意）---------------------------------------------------
-%\begin{acknowledgment}
-%本研究は……の支援を受けた．
-%\end{acknowledgment}
-
-%% ---- 参考文献（BibTeX）--------------------------------------------
+%% --- 参考文献（BibTeX）---------------------------------------------
 \bibliographystyle{ipsjsort}
 \bibliography{references}
-
-%% ---- 著者紹介（投稿時は任意・カメラレディ時に記入）---------------
-%\begin{biography}
-%\profile{m}{情報 太郎}{19XX年生まれ．……}
-%\profile{n}{処理 花子}{19XX年生まれ．……}
-%\end{biography}
 
 \end{document}
